@@ -150,10 +150,12 @@ public class CircularlyLinkedList<E> implements List<E> {
             curr = curr.getNext();
         }
 
+        Node<E> oldTail = tail;
         curr.setNext(tail.getNext());
 
+        tail = curr;
         size--;
-        return tail.getData();
+        return oldTail.getData();
     }
 
     @Override
@@ -164,7 +166,7 @@ public class CircularlyLinkedList<E> implements List<E> {
         else {
             Node<E> newNode = new Node<>(e, tail.getNext());
             size++;
-            tail.getNext().setNext(newNode);
+            tail.setNext(newNode);
         }
 
     }

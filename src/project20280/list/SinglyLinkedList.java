@@ -4,7 +4,7 @@ import project20280.interfaces.List;
 
 import java.util.Iterator;
 
-public class SinglyLinkedList<E> implements List<E> {
+public class SinglyLinkedList<E extends Comparable<? super E>> implements List<E> {
 
     private static class Node<E> {
 
@@ -173,6 +173,56 @@ public class SinglyLinkedList<E> implements List<E> {
             size--;
             return element;
         }
+    }
+
+    public Node<E> sortedMerge(Node<E> l1, Node<E> l2) {
+        // head.next is the first element
+        Node<E> head = new Node<>(null, null);
+        Node<E> curr = head;
+
+        while (l1 != null && l2 != null) {
+            if (l1.getElement().compareTo(l2.getElement()) <= 0) {
+                curr.setNext(l1);
+                l1 = l1.getNext();
+            } else {
+                curr.setNext(l2);
+                l2 = l2.getNext();
+            }
+            curr = curr.getNext();
+        }
+
+        if (l1 != null) {
+            curr.setNext(l1);
+        }
+        else if (l2 != null) {
+            curr.setNext(l2);
+        }
+
+
+        return head.getNext();
+    }
+
+    public void reverse() {
+        Node<E> prev = null;
+        Node<E> curr = head;
+        Node<E> next;
+        while(curr != null) {
+            next = curr.getNext();
+            curr.setNext(prev);
+            prev = curr;
+            curr = next;
+        }
+        head = prev;
+    }
+
+    public SinglyLinkedList<E> copy() {
+        SinglyLinkedList<E> twin = new SinglyLinkedList<E>();
+        Node<E> tmp = head;
+        while (tmp != null) {
+            twin.addLast(tmp.getElement());
+            tmp = tmp.next;
+        }
+        return twin;
     }
 
     //@Override
