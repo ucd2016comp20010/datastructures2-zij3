@@ -4,6 +4,24 @@ import project20280.interfaces.Stack;
 
 public class ArrayStack<E> implements Stack<E> {
 
+    static String convertToBinary(long dec_num) {
+
+        ArrayStack<Integer> res = new ArrayStack<>();
+
+        while (dec_num > 0) {
+            long rem = dec_num % 2;
+            dec_num /= 2;
+            rem = rem == 0 ? 0 : 1;
+            res.push((int) rem);
+        }
+
+        StringBuilder sb = new StringBuilder();
+        while (!res.isEmpty()) {
+            sb.append(res.pop()); // Pops 1, then 0, then 1...
+        }
+
+        return sb.toString();
+    }
     /**
      * Default array capacity.
      */
@@ -17,7 +35,7 @@ public class ArrayStack<E> implements Stack<E> {
     /**
      * Index of the top element of the stack in the array.
      */
-    private final int t = -1;                      // index of the top element in stack
+    private int t = -1;                      // index of the top element in stack
 
     /**
      * Constructs an empty stack using the default array capacity.
@@ -33,7 +51,7 @@ public class ArrayStack<E> implements Stack<E> {
      */
     @SuppressWarnings({"unchecked"})
     public ArrayStack(int capacity) {        // constructs stack with given capacity
-        // TODO
+        data = (E[]) new Object[capacity];
     }
 
     /**
@@ -64,7 +82,7 @@ public class ArrayStack<E> implements Stack<E> {
      */
     @Override
     public void push(E e) {
-        // TODO
+        data[++t] = e;
     }
 
     /**
@@ -74,8 +92,7 @@ public class ArrayStack<E> implements Stack<E> {
      */
     @Override
     public E top() {
-        // TODO
-        return null;
+        return data[t];
     }
 
     /**
@@ -85,9 +102,12 @@ public class ArrayStack<E> implements Stack<E> {
      */
     @Override
     public E pop() {
-        // TODO
-        return null;
+        E e = data[t];
+        data[t--] = null;
+        return e;
     }
+
+
 
     /**
      * Produces a string representation of the contents of the stack.

@@ -1,5 +1,7 @@
 package project20280.stacksqueues;
 
+import project20280.interfaces.Stack;
+
 class BracketChecker {
     private final String input;
 
@@ -8,7 +10,31 @@ class BracketChecker {
     }
 
     public void check() {
-        // TODO
+        ArrayStack<Character> nextClosingBracket = new ArrayStack<>();
+        for (char c : input.toCharArray()) {
+            if (c == '(' || c == '{' || c == '[') {
+                nextClosingBracket.push(c == '(' ? ')' : c == '{' ? '}' : ']');
+            }
+            else if (c == ')' || c == '}' || c == ']') {
+                if (nextClosingBracket.isEmpty()) {
+                    System.out.println("Invalid");
+                    return;
+                }
+                if (c != nextClosingBracket.pop()) {
+                    System.out.println("Invalid");
+                    return;
+                }
+            }
+
+        }
+
+        if (!nextClosingBracket.isEmpty()) {
+            System.out.println("Invalid");
+        }
+        else {
+            System.out.println("Valid");
+        }
+
     }
 
     public static void main(String[] args) {
