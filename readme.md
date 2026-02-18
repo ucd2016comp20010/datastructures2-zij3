@@ -63,3 +63,77 @@ END ALGORITHM
 
 Q4:
 Divide by 9
+
+
+
+Trees:
+Q1:
+    h)
+        Height is 5
+        Diameter is 9
+
+Q2:
+    numLeaves():
+        if isExternal():
+            return 1
+        else:
+            return numLeaves(left) + numLeaves(right)
+
+Q3:
+    numLeftLeaves():
+        if p == null:
+            return 0
+
+        if left.isExternal():
+            return 1
+        else:
+            return numLeftLeaves(left) + numLeftLeaves(right)
+
+Q4:
+Preorder traversal:
+    E
+     \
+      X
+       \
+        A
+         \
+          M
+           \
+            F
+             \
+              U
+               \
+                N
+Inorder traversal:
+
+    E
+     \
+      X
+       \
+        A
+         \
+          M
+           \
+            F
+             \
+              U
+               \
+                N
+Postorder traversal:
+N
+ \
+  U
+   \
+    F
+     \
+      M
+       \
+        A
+         \
+          X
+           \
+            E
+
+Q5:
+    numDescendants():
+        return size - 1
