@@ -98,6 +98,29 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
         bt3.construct(inorder , preorder);
         System.out.println(bt3.toBinaryTreeString());
 
+        int i = 0, j = 10;
+
+        while (i <= j) {
+            System.out.println("ReverseArray(A, " + i + ", " + j + ")");
+            i++;
+            j--;
+        }
+
+        LinkedBinaryTree<String> bt4 = new LinkedBinaryTree<>();
+
+        // Array representing the tree structure
+        // D, G, H, and F should be our leaves
+        String[] arr4 = { "A", "B", "C", "D", "E", null, "F", null, null, "G", "H", null, null, null, null };
+
+        bt4.createLevelOrder(arr4);
+
+        System.out.println("Full Tree Structure:");
+        System.out.println(bt4.toBinaryTreeString());
+
+        // THE TEST
+        bt4.printLeaves();
+
+
 
     }
 
@@ -457,14 +480,13 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
     }
 
     public int numLeaves(Position<E> p) {
-
-        if (p == null) return 0;
-
         if (isExternal(p)) {
             return 1;
         }
-        else return numLeaves(left(p)) + numLeaves(right(p));
-
+        int count = 0;
+        if (left(p) != null) count += numLeaves(left(p));
+        if (right(p) != null) count += numLeaves(right(p));
+        return count;
     }
 
 
@@ -498,6 +520,33 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
         }
 
         currentPath.remove(currentPath.size() - 1);
+    }
+
+    public void printLeaves() {
+        java.util.List<E> leafList = new java.util.ArrayList<>();
+
+        // Safety check: if the tree is empty, just print the empty list
+        if (!isEmpty()) {
+            collectLeavesRecursive(root(), leafList);
+        }
+
+        System.out.println("Leaves: " + leafList.toString());
+    }
+
+    private void collectLeavesRecursive(Position<E> p, java.util.List<E> leafList) {
+        // In a standard LinkedBinaryTree, isExternal(p) returns true if
+        // the node has no children.
+        if (isExternal(p)) {
+            leafList.add(p.getElement());
+        } else {
+            // If it's not a leaf (internal), check its children
+            if (left(p) != null) {
+                collectLeavesRecursive(left(p), leafList);
+            }
+            if (right(p) != null) {
+                collectLeavesRecursive(right(p), leafList);
+            }
+        }
     }
 
     /**

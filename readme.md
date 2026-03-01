@@ -137,3 +137,21 @@ N
 Q5:
     numDescendants():
         return size - 1
+
+ANALYSIS AND RECURSION:
+
+Q1:
+A = {12, 5, 19, 6, 11, 3, 9, 34, 2, 1, 15};
+
+ReverseArray(A, 0, 10)
+    A = {15, 5, 19, 6, 11, 3, 9, 34, 2, 1, 12};
+ReverseArray(A, 1, 9)
+    A = {15, 1, 19, 6, 11, 3, 9, 34, 2, 5, 12};
+ReverseArray(A, 2, 8)
+    A = {15, 1, 2, 6, 11, 3, 9, 34, 19, 5, 12};
+ReverseArray(A, 3, 7)
+    A = {15, 1, 2, 34, 11, 3, 9, 6, 19, 5, 12};
+ReverseArray(A, 4, 6)
+    A = {15, 1, 2, 34, 9, 3, 11, 6, 19, 5, 12};
+ReverseArray(A, 5, 5)
+    return

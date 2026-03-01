@@ -215,14 +215,22 @@ public class SinglyLinkedList<E extends Comparable<? super E>> implements List<E
         head = prev;
     }
 
-    public SinglyLinkedList<E> copy() {
-        SinglyLinkedList<E> twin = new SinglyLinkedList<E>();
-        Node<E> tmp = head;
-        while (tmp != null) {
-            twin.addLast(tmp.getElement());
-            tmp = tmp.next;
-        }
+
+
+    public SinglyLinkedList<E> recursiveCopy() {
+        SinglyLinkedList<E> twin = new SinglyLinkedList<>();
+        twin.head = recursiveCopyNodes(this.head);
         return twin;
+    }
+
+    private Node<E> recursiveCopyNodes(Node<E> node) {
+        if (node == null)
+            return null;
+
+        return new Node<>(
+                node.getElement(),
+                recursiveCopyNodes(node.getNext())
+        );
     }
 
     //@Override
@@ -274,9 +282,18 @@ public class SinglyLinkedList<E extends Comparable<? super E>> implements List<E
         //ll.removeFirst();
         //System.out.println("I accept your apology");
         //ll.add(3, 2);
+
         System.out.println(ll);
-        ll.remove(5);
+
+        System.out.println("\nAfter reversing:");
+        ll.reverse();
         System.out.println(ll);
+
+        SinglyLinkedList<Integer> copy = ll.recursiveCopy();
+        System.out.println("\nRecursive copy:");
+        System.out.println(copy);
+
+
 
     }
 }
