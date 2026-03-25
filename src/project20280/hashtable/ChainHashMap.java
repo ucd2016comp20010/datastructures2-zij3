@@ -2,7 +2,10 @@ package project20280.hashtable;
 
 import project20280.interfaces.Entry;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /*
  * Map implementation using hash table with separate chaining.
@@ -40,6 +43,10 @@ public class ChainHashMap<K, V> extends AbstractHashMap<K, V> {
     @SuppressWarnings({"unchecked"})
     protected void createTable() {
         table = new UnsortedTableMap[capacity];
+
+        for (int i = 0; i < capacity; i++) {
+            table[i] = new UnsortedTableMap<>();
+        }
     }
 
     /**
@@ -52,8 +59,7 @@ public class ChainHashMap<K, V> extends AbstractHashMap<K, V> {
      */
     @Override
     protected V bucketGet(int h, K k) {
-        // TODO
-        return null;
+        return table[h].get(k);
     }
 
     /**
@@ -67,8 +73,11 @@ public class ChainHashMap<K, V> extends AbstractHashMap<K, V> {
      */
     @Override
     protected V bucketPut(int h, K k, V v) {
-        // TODO
-        return null;
+        V oldValue = table[h].put(k, v);
+        if (oldValue == null) {
+            n += 1;
+        }
+        return oldValue;
     }
 
 
@@ -82,8 +91,11 @@ public class ChainHashMap<K, V> extends AbstractHashMap<K, V> {
      */
     @Override
     protected V bucketRemove(int h, K k) {
-        // TODO
-        return null;
+        V oldValue = table[h].remove(k);
+        if (oldValue != null) {
+            n -= 1;
+        }
+        return oldValue;
     }
 
     /**
@@ -113,16 +125,46 @@ public class ChainHashMap<K, V> extends AbstractHashMap<K, V> {
         return entrySet().toString();
     }
 
-    public static void main(String[] args) {
-        ChainHashMap<Integer, String> m = new ChainHashMap<Integer, String>();
-        m.put(1, "One");
-        m.put(10, "Ten");
-        m.put(11, "Eleven");
-        m.put(20, "Twenty");
+    public static void main(String []args) throws FileNotFoundException {
+        String filePath = "src/project20280/hashtable/sample_text.txt";
+        if (args.length > 0) {
+            filePath = args[0];
+        }
 
-        System.out.println("m: " + m);
+        File f = new File(filePath);
+        ChainHashMap<String, Integer> counter = new ChainHashMap<String, Integer>();
 
-        m.remove(11);
-        System.out.println("m: " + m);
+        Scanner scanner = new Scanner(f);
+        while (scanner.hasNext()) {
+            String word = scanner.next().replaceAll("[^a-z0-9']", "");
+            if (word.isEmpty()) {
+                continue;
+            }
+
+            Integer count = counter.get(word);
+            if (count == null) {
+                counter.put(word, 1);
+            } else {
+                counter.put(word, count + 1);
+            }
+        }
+        scanner.close();
+
+        ArrayList<Entry<String, Integer>> frequencies = new ArrayList<>();
+        for (Entry<String, Integer> entry : counter.entrySet()) {
+            frequencies.add(entry);
+        }
+
+        frequencies.sort((a, b) -> {
+            int valueComparison = Integer.compare(b.getValue(), a.getValue());
+            if (valueComparison != 0) {
+                return valueComparison;
+            }
+            return a.getKey().compareTo(b.getKey());
+        });
+
+        for (Entry<String, Integer> entry : frequencies) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
     }
 }
